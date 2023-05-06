@@ -1,0 +1,13 @@
+SET SEARCH_PATH TO {schema_name};
+
+CREATE INDEX idx_measurement_references_from_sources_concept_id
+ON measurement_references_from_sources (concept_id ASC);
+
+CREATE INDEX idx_measurement_unit_specific_references_from_sources_concept_id
+ON measurement_unit_specific_references_from_sources (concept_id ASC);
+
+CREATE INDEX idx_measurement_units_to_drop_concept_id
+ON measurement_units_to_drop (concept_id ASC);
+
+CREATE INDEX idx_measurements_out_of_range_concept_id
+ON measurements_out_of_range (concept_id ASC);
