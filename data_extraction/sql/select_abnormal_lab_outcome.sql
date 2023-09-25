@@ -20,7 +20,7 @@ cohort_outcome_measurements AS (
            m.unit_source_value,
            m.measurement_date
     FROM cohort_birth_year_genders c
-    JOIN {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard m
+    JOIN {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard m
     ON c.person_id = m.person_id
     WHERE m.measurement_concept_id = {outcome_id}
     AND m.value_as_number IS NOT NULL
@@ -46,7 +46,7 @@ outcome_references AS (
            gender_source_value,
            unit_source_value,
            range_{direction}
-    FROM {schema_name}.measurement_age_gender_specific_standardized_{direction}_references
+    FROM {measurement_aux_schema}.measurement_age_gender_specific_standardized_{direction}_references
     WHERE concept_id = {outcome_id}
 ),
 cohort_abnormal_measurements AS (

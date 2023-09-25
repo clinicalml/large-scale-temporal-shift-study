@@ -18,7 +18,7 @@ If category still does not have a reference after looking among similar concepts
 - Reference from general population and unspecified unit in cdm_measurement_aux
 ********************************************************************************/
 
-CREATE TABLE {schema_name}.measurement_age_gender_specific_{direction}_references AS
+CREATE TABLE {measurement_aux_schema}.measurement_age_gender_specific_{direction}_references AS
 -- age ranges to try: < 30, 30 - 50, 50 - 70, > 70
 WITH measurements_with_age_gender AS ( 
     SELECT m.measurement_concept_id AS concept_id, 
@@ -539,19 +539,19 @@ SELECT r.concept_id,
        0 AS from_different_age_range,
        1 AS from_general_reference
 FROM references_to_get_from_general r
-JOIN cdm_measurement_aux.measurement_{direction}_references g
+JOIN {measurement_aux_schema}.measurement_{direction}_references g
 ON r.concept_id = g.concept_id;
 
-CREATE INDEX idx_{schema_name}_age_gender_{direction}_references
-ON {schema_name}.measurement_age_gender_specific_{direction}_references (
+CREATE INDEX idx_{measurement_aux_schema}_age_gender_{direction}_references
+ON {measurement_aux_schema}.measurement_age_gender_specific_{direction}_references (
     concept_id ASC,
     unit_source_value ASC,
     age_range ASC,
     gender_source_value ASC
 );
 
-CREATE INDEX idx_{schema_name}_age_gender_{direction}_references_concept_unit
-ON {schema_name}.measurement_age_gender_specific_{direction}_references (
+CREATE INDEX idx_{measurement_aux_schema}_age_gender_{direction}_references_concept_unit
+ON {measurement_aux_schema}.measurement_age_gender_specific_{direction}_references (
     concept_id ASC,
     unit_source_value ASC
 );

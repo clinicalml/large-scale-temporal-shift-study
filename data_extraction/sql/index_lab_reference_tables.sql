@@ -1,4 +1,4 @@
-SET SEARCH_PATH TO {schema_name};
+SET SEARCH_PATH TO {measurement_aux_schema};
 
 CREATE INDEX idx_measurement_references_from_sources_concept_id
 ON measurement_references_from_sources (concept_id ASC);

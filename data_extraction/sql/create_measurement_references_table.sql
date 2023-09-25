@@ -8,7 +8,7 @@ that shares same first num_characters characters and has average non-zero values
 - If two similar concepts have the same most frequent reference and frequency, smaller concept ID is listed.
 ********************************************************************************/
 
-CREATE TABLE cdm_measurement_aux.measurement_{direction}_references AS 
+CREATE TABLE {measurement_aux_schema}.measurement_{direction}_references AS 
 WITH measurement_concepts AS ( 
     SELECT DISTINCT c.concept_id, 
            c.concept_name 

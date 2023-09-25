@@ -1,6 +1,6 @@
 WITH cohort_ids AS (
     SELECT DISTINCT person_id
-    FROM {schema_name}.omop_cohort_{window_name}{debug_suffix}
+    FROM {schema_name}.omop_cohort_{window_name}{eol_suffix}{debug_suffix}
 ),
 cohort_birth_year_genders AS (
     SELECT c.person_id,
@@ -18,8 +18,8 @@ cohort_measurements AS (
            m.unit_source_value,
            DATE(m.measurement_datetime) AS feature_start_date,
            p.end_date AS person_end_date
-    FROM {schema_name}.omop_cohort_{window_name}{debug_suffix} p
-    JOIN {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard m
+    FROM {schema_name}.omop_cohort_{window_name}{eol_suffix}{debug_suffix} p
+    JOIN {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard m
     ON p.person_id = m.person_id
     AND m.measurement_datetime <= p.end_date
 ),
@@ -86,12 +86,12 @@ cohort_measurements_with_values_and_references AS (
            lr.range_low,
            hr.range_high
     FROM cohort_measurements_with_values_age_ranges_gender m
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references lr
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references lr
     ON m.measurement_concept_id = lr.concept_id
     AND m.unit_source_value = lr.unit_source_value
     AND m.gender_source_value = lr.gender_source_value
     AND m.age_range = lr.age_range
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references hr
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references hr
     ON m.measurement_concept_id = hr.concept_id
     AND m.unit_source_value = hr.unit_source_value
     AND m.gender_source_value = hr.gender_source_value

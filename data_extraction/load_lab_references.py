@@ -18,7 +18,7 @@ def load_reference_tables():
                    'sql', 
                    create_tables_sql_filename), 'r') as f:
         create_tables_sql = f.read()
-    create_tables_sql     = create_tables_sql.format(schema_name = config.nonstationarity_schema_name)
+    create_tables_sql     = create_tables_sql.format(measurement_aux_schema = config.measurement_aux_schema)
     
     engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
                                       echo=False,
@@ -48,7 +48,7 @@ def load_reference_tables():
                    'sql', 
                    index_tables_sql_filename), 'r') as f:
         index_tables_sql = f.read()
-    index_tables_sql     = index_tables_sql.format(schema_name = config.nonstationarity_schema_name)
+    index_tables_sql     = index_tables_sql.format(measurement_aux_schema = config.measurement_aux_schema)
     with session_scope(engine) as session:
         session.execute(sqlalchemy.text(index_tables_sql))
         session.commit()

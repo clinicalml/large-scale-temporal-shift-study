@@ -1,5 +1,6 @@
 # database parameters
 db_name                     = 'placeholder'
+measurement_aux_schema      = 'placeholder'
 nonstationarity_schema_name = 'placeholder'
 
 # directory parameters

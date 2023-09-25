@@ -21,7 +21,7 @@ cohort_outcome_measurements AS (
     FROM {schema_name}.monthly_eligibility_1_year c
     JOIN cohort_birth_year_genders p
     ON c.person_id = p.person_id
-    JOIN {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard m 
+    JOIN {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard m 
     ON c.person_id = m.person_id 
     AND c.end_date <= m.measurement_date 
     AND c.end_date + 3 * INTERVAL '1 month' >= m.measurement_date 
@@ -50,7 +50,7 @@ cohort_outcome_occurrences AS (
            m.concept_id, 
            'low' AS direction
     FROM cohort_outcome_measurements_age_range m 
-    JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references r 
+    JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references r 
     ON m.concept_id = r.concept_id 
     AND m.unit_source_value = r.unit_source_value
     AND m.age_range = r.age_range
@@ -62,7 +62,7 @@ cohort_outcome_occurrences AS (
            m.concept_id, 
            'high' AS direction 
     FROM cohort_outcome_measurements_age_range m 
-    JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references r 
+    JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references r 
     ON m.concept_id = r.concept_id 
     AND m.unit_source_value = r.unit_source_value
     AND m.age_range = r.age_range
@@ -99,42 +99,42 @@ top_outcome_references AS (
            f3.range_low AS female_reference_age_range_3,
            f4.range_low AS female_reference_age_range_4
     FROM top_outcome_counts_with_units c
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references m1 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references m1 
     ON c.concept_id = m1.concept_id
     AND c.unit_source_value = m1.unit_source_value
     AND m1.gender_source_value = 'M'
     AND m1.age_range = 'range 1: <= 30'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references m2 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references m2 
     ON c.concept_id = m2.concept_id
     AND c.unit_source_value = m2.unit_source_value
     AND m2.gender_source_value = 'M'
     AND m2.age_range = 'range 2: 31 - 50'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references m3 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references m3 
     ON c.concept_id = m3.concept_id
     AND c.unit_source_value = m3.unit_source_value
     AND m3.gender_source_value = 'M'
     AND m3.age_range = 'range 3: 51 - 70'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references m4 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references m4 
     ON c.concept_id = m4.concept_id
     AND c.unit_source_value = m4.unit_source_value
     AND m4.gender_source_value = 'M'
     AND m4.age_range = 'range 4: > 70'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references f1 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references f1 
     ON c.concept_id = f1.concept_id
     AND c.unit_source_value = f1.unit_source_value
     AND f1.age_range = 'range 1: <= 30'
     AND f1.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references f2 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references f2 
     ON c.concept_id = f2.concept_id
     AND c.unit_source_value = f2.unit_source_value
     AND f2.age_range = 'range 2: 31 - 50'
     AND f2.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references f3 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references f3 
     ON c.concept_id = f3.concept_id
     AND c.unit_source_value = f3.unit_source_value
     AND f3.age_range = 'range 3: 51 - 70'
     AND f3.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_low_references f4 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_low_references f4 
     ON c.concept_id = f4.concept_id
     AND c.unit_source_value = f4.unit_source_value
     AND f4.age_range = 'range 4: > 70'
@@ -151,42 +151,42 @@ top_outcome_references AS (
            f3.range_high AS female_reference_age_range_3,
            f4.range_high AS female_reference_age_range_4
     FROM top_outcome_counts_with_units c
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references m1 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references m1 
     ON c.concept_id = m1.concept_id
     AND c.unit_source_value = m1.unit_source_value
     AND m1.gender_source_value = 'M'
     AND m1.age_range = 'range 1: <= 30'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references m2 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references m2 
     ON c.concept_id = m2.concept_id
     AND c.unit_source_value = m2.unit_source_value
     AND m2.gender_source_value = 'M'
     AND m2.age_range = 'range 2: 31 - 50'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references m3 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references m3 
     ON c.concept_id = m3.concept_id
     AND c.unit_source_value = m3.unit_source_value
     AND m3.gender_source_value = 'M'
     AND m3.age_range = 'range 3: 51 - 70'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references m4 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references m4 
     ON c.concept_id = m4.concept_id
     AND c.unit_source_value = m4.unit_source_value
     AND m4.gender_source_value = 'M'
     AND m4.age_range = 'range 4: > 70'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references f1 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references f1 
     ON c.concept_id = f1.concept_id
     AND c.unit_source_value = f1.unit_source_value
     AND f1.age_range = 'range 1: <= 30'
     AND f1.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references f2 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references f2 
     ON c.concept_id = f2.concept_id
     AND c.unit_source_value = f2.unit_source_value
     AND f2.age_range = 'range 2: 31 - 50'
     AND f2.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references f3 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references f3 
     ON c.concept_id = f3.concept_id
     AND c.unit_source_value = f3.unit_source_value
     AND f3.age_range = 'range 3: 51 - 70'
     AND f3.gender_source_value = 'F'
-    LEFT JOIN {schema_name}.measurement_age_gender_specific_standardized_high_references f4 
+    LEFT JOIN {measurement_aux_schema}.measurement_age_gender_specific_standardized_high_references f4 
     ON c.concept_id = f4.concept_id
     AND c.unit_source_value = f4.unit_source_value
     AND f4.age_range = 'range 4: > 70'

@@ -46,12 +46,12 @@ def create_lab_reference_table(direction,
                    'sql', 
                    reference_table_sql_filename), 'r') as f:
         create_table_sql = f.read()
-    create_table_sql     = create_table_sql.format(direction          = direction,
-                                                   reference_order    = reference_order,
-                                                   min_ref_count      = min_ref_count,
-                                                   num_characters     = num_characters,
-                                                   avg_diff_threshold = avg_diff_threshold,
-                                                   schema_name        = config.nonstationarity_schema_name)
+    create_table_sql     = create_table_sql.format(direction              = direction,
+                                                   reference_order        = reference_order,
+                                                   min_ref_count          = min_ref_count,
+                                                   num_characters         = num_characters,
+                                                   avg_diff_threshold     = avg_diff_threshold,
+                                                   measurement_aux_schema = config.measurement_aux_schema)
     
     engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
                                       echo=False,
@@ -75,8 +75,8 @@ def standardize_lab_reference_table(direction):
                    'sql', 
                    reference_table_sql_filename), 'r') as f:
         create_table_sql = f.read()
-    create_table_sql     = create_table_sql.format(direction   = direction,
-                                                   schema_name = config.nonstationarity_schema_name)
+    create_table_sql     = create_table_sql.format(direction              = direction,
+                                                   measurement_aux_schema = config.measurement_aux_schema)
     
     engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
                                       echo=False,

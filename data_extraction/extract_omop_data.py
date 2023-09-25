@@ -340,10 +340,11 @@ def extract_features(cohort,
     debug_suffix     = ''
     if debug_size is not None:
         debug_suffix = '_debug' + str(debug_size)
-    feature_sql_params = {'window_name' : eligibility_time.replace(' ', '_'),
-                          'eol_suffix'  : eol_suffix,
-                          'schema_name' : config.nonstationarity_schema_name,
-                          'debug_suffix': debug_suffix}
+    feature_sql_params = {'window_name'           : eligibility_time.replace(' ', '_'),
+                          'eol_suffix'            : eol_suffix,
+                          'schema_name'           : config.nonstationarity_schema_name,
+                          'measurement_aux_schema': config.measurement_aux_schema,
+                          'debug_suffix'          : debug_suffix}
     features = [Feature(n, p, params=feature_sql_params) 
                 for n, p in zip(feature_names, feature_paths)]
 

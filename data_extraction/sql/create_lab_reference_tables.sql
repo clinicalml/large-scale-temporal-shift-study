@@ -1,4 +1,4 @@
-SET SEARCH_PATH TO {schema_name};
+SET SEARCH_PATH TO {measurement_aux_schema};
 
 -- create table for general references
 DROP TABLE IF EXISTS measurement_references_from_sources;

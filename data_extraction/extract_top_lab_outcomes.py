@@ -25,8 +25,9 @@ def select_top_lab_outcomes(number_outcomes,
                    'sql', 
                    'select_top_abnormal_lab_outcomes.sql'), 'r') as f:
         top_feat_sql = f.read()
-    top_feat_sql     = top_feat_sql.format(number_outcomes = number_outcomes,
-                                           schema_name     = config.nonstationarity_schema_name)
+    top_feat_sql     = top_feat_sql.format(number_outcomes        = number_outcomes,
+                                           schema_name            = config.nonstationarity_schema_name,
+                                           measurement_aux_schema = config.measurement_aux_schema)
     engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
                                       echo=False,
                                       connect_args = {"host": '/var/run/postgresql/'})

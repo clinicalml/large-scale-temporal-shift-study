@@ -1,7 +1,7 @@
 WITH lab_measurements AS ( 
     SELECT person_id, 
            measurement_date 
-    FROM {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard 
+    FROM {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard 
     WHERE measurement_concept_id IN ({concept_id}) 
     AND value_as_number IS NOT NULL 
 ), 

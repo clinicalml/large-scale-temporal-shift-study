@@ -2,7 +2,7 @@
 Script to create indexes and constraints on cdm_measurement_aux tables
 ********************************************************************************/
 
-SET SEARCH_PATH TO cdm_measurement_aux;
+SET SEARCH_PATH TO {measurement_aux_schema};
 
 /************************
 Primary key constraints

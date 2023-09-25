@@ -1,17 +1,17 @@
 -- Drop units that do not make sense and measurements that are out of range
-DROP TABLE IF EXISTS {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard;
-CREATE TABLE {schema_name}.measurement_with_nulls_replacing_zero_drop_nonstandard AS
+DROP TABLE IF EXISTS {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard;
+CREATE TABLE {measurement_aux_schema}.measurement_with_nulls_replacing_zero_drop_nonstandard AS
 SELECT m.*
-FROM cdm_measurement_aux.measurement_with_nulls_replacing_zero m
+FROM {measurement_aux_schema}.measurement_with_nulls_replacing_zero m
 WHERE NOT EXISTS (
     SELECT
-    FROM {schema_name}.measurement_units_to_drop d
+    FROM {measurement_aux_schema}.measurement_units_to_drop d
     WHERE m.measurement_concept_id = d.concept_id
     AND m.unit_source_value = d.unit_source_value
 )
 AND NOT EXISTS (
     SELECT
-    FROM {schema_name}.measurements_out_of_range r
+    FROM {measurement_aux_schema}.measurements_out_of_range r
     WHERE m.measurement_concept_id = r.concept_id
     AND m.unit_source_value = r.unit_source_value
     AND m.value_as_number IS NOT NULL
@@ -22,7 +22,7 @@ AND NOT EXISTS (
 );
 
 -- Add same indices as measurement table
-SET SEARCH_PATH TO {schema_name};
+SET SEARCH_PATH TO {measurement_aux_schema};
 
 /************************
 Primary key constraints

@@ -6,7 +6,7 @@ AND (reference range low is at least threshold
          AND average non-zero value is at least threshold))
 ********************************************************************************/
 
-CREATE TABLE cdm_measurement_aux.measurement_with_nulls_replacing_zero AS
+CREATE TABLE {measurement_aux_schema}.measurement_with_nulls_replacing_zero AS
 WITH measurement_concepts AS ( 
     SELECT DISTINCT measurement_concept_id AS concept_id
     FROM cdm.measurement
@@ -19,7 +19,7 @@ measurements_with_negatives AS ( -- zero is null if not exists in here
 ),
 measurements_with_high_references AS ( -- and (exists in here
     SELECT concept_id
-    FROM cdm_measurement_aux.measurement_low_references
+    FROM {measurement_aux_schema}.measurement_low_references
     WHERE range_low >= {threshold}
 ),
 measurements_with_no_references AS (
@@ -27,7 +27,7 @@ measurements_with_no_references AS (
     FROM measurement_concepts c
     WHERE NOT EXISTS (
         SELECT 
-        FROM cdm_measurement_aux.measurement_low_references r
+        FROM {measurement_aux_schema}.measurement_low_references r
         WHERE c.concept_id = r.concept_id
     )
 ),
