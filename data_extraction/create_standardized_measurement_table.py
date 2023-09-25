@@ -20,9 +20,7 @@ def create_standardized_measurement_table():
         measurement_table_sql = f.read()
     measurement_table_sql     = measurement_table_sql.format(measurement_aux_schema = config.measurement_aux_schema)
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(measurement_table_sql)
         session.commit()

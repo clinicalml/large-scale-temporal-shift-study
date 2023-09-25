@@ -65,9 +65,7 @@ def create_window_prediction_dates(eligibility_time):
         sql_params.update({'window'    : '3_years',
                            'start_date': '2017-01-01'})
     prediction_dates_window_sql = prediction_dates_window_sql.format(**sql_params)
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(sqlalchemy.text(prediction_dates_window_sql))
         session.commit()
@@ -85,9 +83,7 @@ def _get_prediction_dates(eligibility_time):
                            )
     prediction_dates_sql = prediction_dates_sql.format(window      = eligibility_time.replace(' ', '_'),
                                                        schema_name = config.nonstationarity_schema_name)
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         prediction_dates_result = session.execute(sqlalchemy.text(prediction_dates_sql))
         session.commit()
@@ -121,9 +117,7 @@ def extract_monthly_eligibility(monthly_eligibility_hf5_file,
         eligible_ids        = load_data_from_h5py(eligible_ids_hf5_file)['eligible_ids']
         return monthly_eligibility, eligible_ids
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         # create table of person_id, prediction_date, and other cohort columns where person is eligible on prediction date
         if eol_version:
@@ -225,9 +219,7 @@ def extract_omop_cohort(cohort_pickle_file,
         debug_suffix   = ''
         debug_size_str = ''
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         
         # create omop pkg cohort
@@ -622,9 +614,7 @@ def extract_outcomes(outcome_sql_file,
     cache_path             = Path(config.cache_dir)
     assert os.path.exists(dataset_json_full_path), dataset_json_full_path + ' does not exist'
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
         
     # create table if outcome is not eol
     if len(outcome_sql_file) > 0:
@@ -739,9 +729,7 @@ def split_data(eligible_ids,
     # n-fold cross-validation among patients who have outcome for each month 
     # (last month for patients who have outcome multiple times)
     prediction_dates = _get_prediction_dates(eligibility_time)
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         for prediction_date in prediction_dates:
             outcome1_sql = ('WITH outcome1_before_cohort AS ( '
@@ -889,9 +877,7 @@ def extract_condition_monthly_eligibility(eligible_ids,
         logger.info('Loading condition monthly eligibility from ' + condition_monthly_eligibility_hf5_file)
         return load_data_from_h5py(condition_monthly_eligibility_hf5_file)['monthly_eligibility']
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         
         # map prediction date to column index of array
@@ -1465,9 +1451,7 @@ def plot_cohort_size_and_outcome_freq(output_fileheader,
                                                    schema_name  = config.nonstationarity_schema_name,
                                                    window_name  = eligibility_time,
                                                    debug_suffix = debug_suffix)
-            engine           = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                                        echo = False,
-                                                        connect_args = {"host": '/var/run/postgresql/'})
+            engine           = config.create_sqlalchemy_engine()
             with session_scope(engine) as session:
                 lab_freq_result = session.execute(lab_freq_sql)
                 session.commit()

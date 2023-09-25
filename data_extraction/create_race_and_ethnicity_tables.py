@@ -18,9 +18,7 @@ def create_race_and_ethnicity_tables():
     with open('sql/create_ethnicity_concept_table.sql', 'r') as f:
         ethnicity_sql = f.read()
         
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(race_sql.format(schema_name = config.nonstationarity_schema_name))
         session.execute(ethnicity_sql.format(schema_name = config.nonstationarity_schema_name))

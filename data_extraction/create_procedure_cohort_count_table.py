@@ -13,9 +13,7 @@ if __name__ == '__main__':
         procedure_count_sql = f.read()
     procedure_count_sql     = procedure_count_sql.format(schema_name = config.nonstationarity_schema_name)
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         proc_results = session.execute(sqlalchemy.text(procedure_count_sql))
         session.commit()

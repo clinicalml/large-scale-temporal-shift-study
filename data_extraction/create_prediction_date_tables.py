@@ -30,9 +30,7 @@ def create_prediction_date_tables():
     with open('sql/load_prediction_date_tables.sql', 'r') as f:
         sql = f.read()
         
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo         = False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(sql.format(schema_name = config.nonstationarity_schema_name))
         session.commit()

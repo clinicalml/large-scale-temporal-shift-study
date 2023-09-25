@@ -50,9 +50,7 @@ def create_reference_table(direction,
                                                    avg_diff_threshold     = avg_diff_threshold,
                                                    reference_order        = reference_order)
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(create_table_sql)
         session.commit()
@@ -75,9 +73,7 @@ def create_table_with_nulls_replacing_zero(threshold=5):
     create_table_sql     = create_table_sql.format(measurement_aux_schema = config.measurement_aux_schema,
                                                    threshold              = threshold)
     
-    engine = sqlalchemy.create_engine('postgresql://' + config.db_name,
-                                      echo=False,
-                                      connect_args = {"host": '/var/run/postgresql/'})
+    engine = config.create_sqlalchemy_engine()
     with session_scope(engine) as session:
         session.execute(create_table_sql)
         session.commit()
