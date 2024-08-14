@@ -1,7 +1,10 @@
-## Scan for temporal shift
+# Scan for temporal shift
 
 Prior to running these experiments, extract data using `data_extraction`. See its README.
-To check for non-stationarity in a single task:
+
+## Testing for non-stationarity in a single task
+
+A single task is a model for predicting an outcome at a particular time point. To test for temporal shift in a single task:
 1. Run `python3 run_nonstationarity_check.py` with the following arguments:
     - `--outcome=`: `eol`, `condition`, `procedure`, `lab`, `lab_group`
     - `--outcome_id=`: concept ID for condition, procedure, or measurement, string name for procedures or lab groups
@@ -34,7 +37,9 @@ To check for non-stationarity in a single task:
     - `--feature_windows`: specify comma-separated list of window lengths in days for features, default: 30
     - `--fold`: specify which data fold to use, default: 0
     
-To automate the scan for the outcomes generated in `data_extraction`:
+## Automated large-scale scan
+
+To automate the scan for a large set of outcomes, such as the most frequent conditions and labs as computed in `data_extraction`, and across a large number of years:
 1. Run `python3 write_automated_run_experiment_scripts.py` and `python3 write_automated_run_procedure_experiment_scripts.py` with the following arguments:
     - `--outcome=`: `condition`, `lab` (only for the former)
     - `--subsample_sizes=`: comma-separated list of number of samples to use per year
@@ -46,6 +51,8 @@ To automate the scan for the outcomes generated in `data_extraction`:
 4. To create a list of all tasks where the baseline detects temporal shift (also applies multiple hypothesis testing and a clinical significance criterion), run `python3 summarize_baseline_nonstationarity_check_results.py` with the same optional arguments above.
 5. To plot the results, run `python3 plot_hypothesis_test_results.py`
 6. Results can be found in the experiment directory specified in `config.py`, with summarized results in the sub-directory starting with `experiments_selected_with_multiple_hypothesis_testing`
+
+## Case studies
 
 To examine domain shift in 2020:
 1. Run `python3 examine_domain_shift_in_2020.py`
@@ -67,6 +74,8 @@ To find examples of conditional shift via coefficient changes or interpretable s
 2. To examine outcome frequencies in feature groups, run `python3 examine_conditional_shifts.py`
 3. To address conditional shift by re-calibrating predictions for specific sub-populations, run `python3 recalibrate_subpopulations_for_conditional_shift.py` with the argument `--outcome_name`
 4. To address conditional shift by learning models with more robust features, run `python3 select_robust_features_for_conditional_shift.py` with the argument `--outcome_name` and `--statsmodels` if using statsmodels instead of scikit-learn
+
+## Reproducing figures
 
 To reproduce Figure 4 in our paper:
 1. Run `python3 plot_nonstationarity_checks_in_paper.py`.
